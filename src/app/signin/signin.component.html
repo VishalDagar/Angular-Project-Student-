@@ -1,0 +1,52 @@
+
+    <div class="container-fluid" [ngStyle]="{'background' : 'url(./assets/image/flow.jpg)'}">
+    <h2>Student Sign In</h2>
+
+<form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    
+   
+     <div class="form-group"></div>
+      <label>Student name</label>
+      <input type="text" [class.is-invalid]="signInForm.get('studentName').invalid && signInForm.get('studentName').touched" formControlName="studentName" class="form-control">
+      
+      
+      <div *ngIf = "signInForm.get('studentName').invalid && signInForm.get('studentName').touched">
+        <small *ngIf = "signInForm.get('studentName').errors?.required" class="text-danger">Student Name is required</small>
+        <small *ngIf = "signInForm.get('studentName').errors?.minlength" class="text-danger">Student Name must be at least 3 characters</small>
+        <small *ngIf = "signInForm.get('studentName').errors?.forbiddenName" class="text-danger">{{studentName.errors?.forbiddenName.value}} username not allowed</small>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <button type ="button" class="btn btn-secondary btn-sm m-2" (click)="addAlternateEmail()">Add e-mail</button>
+        <input type="text" [class.is-invalid]="email.invalid && email.touched" formControlName="email" class="form-control">     
+        <small *ngIf = "email.invalid && email.touched" class="text-danger">Email is required</small>
+        <div formArrayName="alternateEmails"*ngFor="let email of alternateEmails.controls; let i=index">
+          <input type="text" class="form-control my-1" [formControlName]="i">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password"formControlName="password" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input [class.is-invalid]="signInForm.errors?.misMatch" type="password" formControlName="confirmPassword"class="form-control">    
+       </div>
+        <small class="text-danger" *ngIf = "signInForm.errors?.misMatch" class="text-danger"> Passwords do not match</small>
+        
+
+      <div class="form-group">
+        <label>Student ID</label>
+        <input  formControlName="studentID" required class="form-control">
+      </div>
+      
+    
+      <button [disabled]='!signInForm.valid'class="btn btn-primary" type= "submit">SignIn</button>
+     
+<hr/>
+   {{signInForm.value | json}}
+</form>
+</div>
